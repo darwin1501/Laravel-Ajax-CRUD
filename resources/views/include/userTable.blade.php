@@ -2,7 +2,8 @@
   <input type="text" id="searchName" class="p-4 w-4/4 bg-gray-200 rounded-lg border-2 border-gray-300 text-center" placeholder="Search Name">
 </div>
 <div class="flex justify-center mt-10">
-    <table class="table-auto border-2 border-gray-400 p-2">
+  <p id="noResult" class="hidden">No Results Found</p>
+    <table id="table" class="table-auto border-2 border-gray-400 p-2">
         <thead>
           <tr class="border-2 border-gray-400 p-2">
             <th class="border-2 border-gray-400 p-2">Name</th>

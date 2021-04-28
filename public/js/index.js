@@ -66,6 +66,8 @@ searchName.addEventListener('input', ()=>{
     let currentPageLink = document.getElementById('currentPageLink');
     const token = document.querySelector('meta[name="csrf-token"]').content;
     const name = searchName.value;
+    const noResult= document.getElementById('noResult');
+    const table = document.getElementById('table');
     const request = new XMLHttpRequest;
 
     request.open("GET",'/search/'+name, true);
@@ -78,7 +80,14 @@ searchName.addEventListener('input', ()=>{
         paginationButtons(result);
         // set current page link
         currentPageLink.value = result.links[1].url;
-        // set current page url
+        // console.log(result.data.length);
+        if(result.data.length === 0){
+            noResult.classList.remove('hidden');
+            table.classList.add('hidden');
+        }else if(result.data.length > 0){
+            noResult.classList.add('hidden');
+            table.classList.remove('hidden');
+        }
     }
     // send request if not empty
     if(!(name === '')){
