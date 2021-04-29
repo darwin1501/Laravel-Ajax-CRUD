@@ -15,9 +15,9 @@
                     <br><br>
                     {{-- orders --}}
                     {{-- Total Order:  --}}
-                    <p class="text-center">Total Order:</p>
+                    <p id="totalOrder"class="text-center"></p>
                     <br><br>
-                    <p class="text-center">List of Orders</p>
+                    <p id="userOrders" class="text-center">List of Orders</p>
                     {{-- List of Orders  with edit and remove orders button --}}
                 </div>
             </div>

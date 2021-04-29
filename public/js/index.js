@@ -269,15 +269,39 @@ const profileModal = (()=>{
         const username = document.getElementById('profileUsername');
         const email = document.getElementById('profileEmail');
         const result = JSON.parse(this.responseText);
-
+        const totalOrder = document.getElementById('totalOrder');
+        let userOrders = document.getElementById('userOrders'); 
+        let ordersTemplate;
+        const orders = result.orders;
+        const allOrderQty = [];
+        let totalOrderQty;
+        // get each quantity
+        // reset the content or orders
+        userOrders.innerHTML = "";
+        // show each order
+        for (const order of orders) {
+            allOrderQty.push(order.quantity);
+            ordersTemplate =  `${order.product_name} ${order.quantity} 
+            <button value="${order.id}" onclick="editOrderModal()" class="text-blue-500" >edit</button> 
+            <button value="${order.id}" class="text-red-400">remove</button><br><br>`;
+            userOrders.insertAdjacentHTML('beforeend', ordersTemplate);
+        };
         username.innerHTML = `Username: ${result.name}`;
         email.innerHTML = `Email: ${result.email}`;
-        // console.log(this.responseText);
+        // add all numbers on array, 0 was default value
+        totalOrderQty =  allOrderQty.reduce((a,b)=>a+b, 0);
+        totalOrder.innerHTML = `Total Orders: ${totalOrderQty}`;
         document.getElementById('profileModal').style.display='block';
     }
     request.send();
+})
 
-    
+const editOrderModal = (()=>{
+    document.getElementById('editOrderModal').style.display='block';
+})
+
+const closeEditOrderModal= (()=>{
+    document.getElementById('editOrderModal').style.display='none';
 })
 
 const closeProfileModal = (()=>{

@@ -6,8 +6,9 @@
         @include('include.userTable')
         @include('include.addUserModal')
         @include('include.editUserModal')
-        @include('include.addOrder')
         @include('include.profile')
+        @include('include.addOrder')
+        @include('include.editOrder')
     </main>
     {{-- add user modal --}}
     {{-- edit user modal --}}
