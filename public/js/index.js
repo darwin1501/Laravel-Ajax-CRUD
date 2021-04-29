@@ -43,6 +43,9 @@ const generateTable = ((users)=>{
                         <div class="dropdown">
                         <div class="dropbtn" style="background-image: url('/svg/setting.svg')"></div>
                         <div class="dropdown-content">
+                            <button class="hover:bg-gray-300 w-full p4 btn-edit" onclick="addOrderModal()" value=${user.id}>
+                                Add Order
+                            </button>
                             <button class="hover:bg-gray-300 w-full p4 btn-edit" onclick="editUserModal()" value=${user.id}>
                                 edit
                             </button>
@@ -256,7 +259,7 @@ const closeAddUserModal = (()=>{
 
 const addOrderModal = (()=>{
     document.getElementById('addOrderModal').style.display='block';
-})
+});
 
 const closeAddOrderModal = (()=>{
     document.getElementById('addOrderModal').style.display='none';
