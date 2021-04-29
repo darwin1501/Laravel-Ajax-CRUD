@@ -4,10 +4,10 @@
     <main class="mt-40">
         @include('include.buttons')
         @include('include.userTable')
-
         @include('include.addUserModal')
         @include('include.editUserModal')
         @include('include.addOrder')
+        @include('include.profile')
     </main>
     {{-- add user modal --}}
     {{-- edit user modal --}}

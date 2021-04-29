@@ -36,7 +36,7 @@ const generateTable = ((users)=>{
             const D = new Date(dateString);
             const tableRow = `
                 <tr id=${user.id}>
-                    <td class="border-2 border-gray-400 p-2">${user.name}</td>
+                    <td class="border-2 border-gray-400 p-2"><button class="link" onclick="profileModal()" value=${user.id}>${user.name}</button></td>
                     <td class="border-2 border-gray-400 p-2">${user.email}</td>
                     <td class="border-2 border-gray-400 p-2">${("0"+D.getDate()).slice(-2)}/${("0"+(D.getMonth()+1)).slice(-2)}/${D.getFullYear()}</td>
                     <td class="border-2 border-gray-400 p-2">
@@ -257,6 +257,33 @@ const closeAddUserModal = (()=>{
     document.getElementById('addUserModal').style.display='none';
 });
 
+const profileModal = (()=>{
+    const target = event.target || event.srcElement;
+    const user = target.value;
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const request = new XMLHttpRequest();
+
+    request.open("GET",'/profile/'+user, true);
+    request.setRequestHeader("X-CSRF-TOKEN", token);
+    request.onload = function(){
+        const username = document.getElementById('profileUsername');
+        const email = document.getElementById('profileEmail');
+        const result = JSON.parse(this.responseText);
+
+        username.innerHTML = `Username: ${result.name}`;
+        email.innerHTML = `Email: ${result.email}`;
+        // console.log(this.responseText);
+        document.getElementById('profileModal').style.display='block';
+    }
+    request.send();
+
+    
+})
+
+const closeProfileModal = (()=>{
+    document.getElementById('profileModal').style.display='none';
+})
+
 const addOrderModal = (()=>{
     const token = document.querySelector('meta[name="csrf-token"]').content;
     // get the user id
@@ -403,6 +430,7 @@ const deleteUser = ((userId)=>{
 
     return false;
 });
+
 
 // testing
 // const postUsers = (()=>{

@@ -9,7 +9,12 @@
   color:white !important;
   /* border-color: red !important; */
 }
-
+.link{
+  cursor:pointer;
+}
+.link:hover{
+  color:dodgerblue;
+}
 /* errors */
 .error-inputs{
     border-color: red !important;
@@ -40,7 +45,7 @@
     z-index: 1;
     margin-left: 40px;
     margin-top: -40px;
-    padding: 40px;
+    padding: 20px;
   }
   .dropdown-content button {
     padding: 5px 5px;
