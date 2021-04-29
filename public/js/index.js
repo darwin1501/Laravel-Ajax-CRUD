@@ -258,12 +258,54 @@ const closeAddUserModal = (()=>{
 });
 
 const addOrderModal = (()=>{
-    document.getElementById('addOrderModal').style.display='block';
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    // get the user id
+    const target = event.target || event.srcElement; 
+    const user = target.value;
+    const request = new XMLHttpRequest();
+
+    // route model binding
+    request.open("GET",'/order/'+user, true);
+    request.setRequestHeader("X-CSRF-TOKEN", token);
+    request.onload = function(){
+        const orderLable = document.getElementById('orderLabel');
+        const userId = document.getElementById('orderUserId');
+        const result = JSON.parse(this.responseText);
+        //show modal
+        document.getElementById('addOrderModal').style.display='block';
+        orderLable.innerHTML = `Add an Order to <br><br><strong>${result.name}</strong>`;
+        // assign user id
+        userId.value = result.id;
+    };
+    request.send();
 });
 
 const closeAddOrderModal = (()=>{
     document.getElementById('addOrderModal').style.display='none';
 });
+
+const addOrder = (()=>{
+    const token = document.querySelector('meta[name="csrf-token"]').content; 
+    const order = document.getElementById('order');
+    const quantity = document.getElementById('quantity');
+    const userId = document.getElementById('orderUserId').value;
+    const request = new XMLHttpRequest();
+
+    request.open("POST",'/addorder', true);
+    request.setRequestHeader("X-CSRF-TOKEN", token);
+    request.onload = function(){
+    //    clear user inputs
+        order.value = "";
+        quantity.value = "";
+    };
+    // console.log(userId);
+    request.send(JSON.stringify({
+        userId: userId,
+        order: order.value,
+        quantity: quantity.value 
+    }));
+    return false;
+})
 
 const editUserModal = (()=>{
     const token = document.querySelector('meta[name="csrf-token"]').content; 

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrdersController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +39,6 @@ Route::delete('/delete/{user}', [UsersController::class, 'deleteUser']);
 // Route::get('/users/{user}', [UsersController::class, 'getUsers']);
 Route::post('/users', [UsersController::class, 'addUsers'])->name('test.post');
 
+// order
+Route::get('/order/{user}', [OrdersController::class, 'userOrder']);
+Route::post('/addorder', [OrdersController::class, 'addUserOrder']);

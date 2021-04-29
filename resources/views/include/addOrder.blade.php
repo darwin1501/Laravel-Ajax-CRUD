@@ -4,10 +4,11 @@
             <div>
                 <button onclick="closeAddOrderModal()" class="close-btn p-2 pl-4 pr-4 hover:bg-red-400 hover:text-white">&times;</button>
             </div>
-            <p class="text-center">Add an Order</p>
+            <p id ="orderLabel" class="text-center"></p>
             <div class="flex justify-center mt-4">
                 <div class="input-container">
-                    <form  id="addOrderForm">
+                    <input type="hidden" id="orderUserId">
+                    <form  onsubmit="return addOrder()" id="addOrderForm">
                         <select name="order" id="order" class="rounded-lg p-4 w-full border-2 border-gray-300 mb-3" required oninvalid="requiredError()">
                             <option value=""> -- Select Products --</option>
                             <option value="apple">Apple</option>
