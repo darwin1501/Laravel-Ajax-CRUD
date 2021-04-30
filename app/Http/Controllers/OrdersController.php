@@ -30,4 +30,8 @@ class OrdersController extends Controller
         // return `{$userId}, {$order}, {$quantity}`;
         // return $order;
     }
+    public function editUserOrder(Order $order)
+    {
+        return $order;
+    }
 }

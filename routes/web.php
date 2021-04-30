@@ -42,6 +42,7 @@ Route::post('/users', [UsersController::class, 'addUsers'])->name('test.post');
 // order
 Route::get('/order/{user}', [OrdersController::class, 'userOrder']);
 Route::post('/addorder', [OrdersController::class, 'addUserOrder']);
+Route::get('/editorder/{order}', [OrdersController::class, 'editUserOrder']);
 
 // profile
 Route::get('/profile/{user}', [ProfileController::class, 'userProfile']);

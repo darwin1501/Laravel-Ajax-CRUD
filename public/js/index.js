@@ -297,7 +297,24 @@ const profileModal = (()=>{
 })
 
 const editOrderModal = (()=>{
-    document.getElementById('editOrderModal').style.display='block';
+    const target = event.taget || event.srcElement;
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const request = new XMLHttpRequest();
+    // orderid
+    const order = target.value;
+
+    request.open("GET",'/editorder/'+order, true);
+    request.setRequestHeader("X-CSRF-TOKEN", token);
+    request.onload = function(){
+        const order = document.getElementById('editOrder');
+        const quantity = document.getElementById('editQuantity');
+        const result = JSON.parse(this.responseText);
+
+        order.value = result.product_name;
+        quantity.value = result.quantity;
+        document.getElementById('editOrderModal').style.display='block';
+    };
+    request.send();
 })
 
 const closeEditOrderModal= (()=>{
@@ -314,7 +331,6 @@ const addOrderModal = (()=>{
     const target = event.target || event.srcElement; 
     const user = target.value;
     const request = new XMLHttpRequest();
-
     // route model binding
     request.open("GET",'/order/'+user, true);
     request.setRequestHeader("X-CSRF-TOKEN", token);
