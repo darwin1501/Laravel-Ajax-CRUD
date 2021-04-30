@@ -10,6 +10,7 @@ class ProfileController extends Controller
     public function userProfile(User $user){
         
         $data = [
+            'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'orders' => $user->order()->get()

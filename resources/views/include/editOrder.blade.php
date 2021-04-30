@@ -8,7 +8,7 @@
             <div class="flex justify-center mt-4">
                 <div class="input-container">
                     <input type="hidden" id="orderUserId">
-                    <form  onsubmit="return addOrder()" id="addOrderForm">
+                    <form  onsubmit="return updateOrder()" id="addOrderForm">
                         <select name="editOrder" id="editOrder" class="rounded-lg p-4 w-full border-2 border-gray-300 mb-3" required oninvalid="requiredError()">
                             <option value=""> -- Select Products --</option>
                             <option value="apple">Apple</option>

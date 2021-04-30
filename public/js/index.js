@@ -124,6 +124,37 @@ const getAllUsers = (()=>{
 
 getAllUsers();
 
+const getUserOrders = ((userId)=>{
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const request = new XMLHttpRequest();
+
+    request.open("GET",'/userorders/'+userId, true);
+    request.setRequestHeader("X-CSRF-TOKEN", token);
+    request.onload = function(){
+        const orders = JSON.parse(this.responseText);
+        const totalOrder = document.getElementById('totalOrder');
+        let userOrders = document.getElementById('userOrders'); 
+        let ordersTemplate;
+        const allOrderQty = [];
+        let totalOrderQty;
+        // get each quantity
+        // reset the content or orders
+        userOrders.innerHTML = "";
+        // show each order
+        for (const order of orders) {
+            allOrderQty.push(order.quantity);
+            ordersTemplate =  `${order.product_name} ${order.quantity} 
+            <button value="${order.id}" onclick="editOrderModal()" class="text-blue-500" >edit</button> 
+            <button value="${order.id}" class="text-red-400">remove</button><br><br>`;
+            userOrders.insertAdjacentHTML('beforeend', ordersTemplate);
+        };
+        // add all numbers on array, 0 was default value
+        totalOrderQty =  allOrderQty.reduce((a,b)=>a+b, 0);
+        totalOrder.innerHTML = `Total Orders: ${totalOrderQty}`;
+    }
+    request.send();
+})
+
 const navigatePagination = ((url)=>{
         const currentPageLink = document.getElementById('currentPageLink');
         const paginationLinks = document.getElementById('paginationLinks');
@@ -259,6 +290,7 @@ const closeAddUserModal = (()=>{
 
 const profileModal = (()=>{
     const target = event.target || event.srcElement;
+    // user id
     const user = target.value;
     const token = document.querySelector('meta[name="csrf-token"]').content;
     const request = new XMLHttpRequest();
@@ -269,28 +301,10 @@ const profileModal = (()=>{
         const username = document.getElementById('profileUsername');
         const email = document.getElementById('profileEmail');
         const result = JSON.parse(this.responseText);
-        const totalOrder = document.getElementById('totalOrder');
-        let userOrders = document.getElementById('userOrders'); 
-        let ordersTemplate;
-        const orders = result.orders;
-        const allOrderQty = [];
-        let totalOrderQty;
-        // get each quantity
-        // reset the content or orders
-        userOrders.innerHTML = "";
-        // show each order
-        for (const order of orders) {
-            allOrderQty.push(order.quantity);
-            ordersTemplate =  `${order.product_name} ${order.quantity} 
-            <button value="${order.id}" onclick="editOrderModal()" class="text-blue-500" >edit</button> 
-            <button value="${order.id}" class="text-red-400">remove</button><br><br>`;
-            userOrders.insertAdjacentHTML('beforeend', ordersTemplate);
-        };
+        
+        getUserOrders(result.id)
         username.innerHTML = `Username: ${result.name}`;
         email.innerHTML = `Email: ${result.email}`;
-        // add all numbers on array, 0 was default value
-        totalOrderQty =  allOrderQty.reduce((a,b)=>a+b, 0);
-        totalOrder.innerHTML = `Total Orders: ${totalOrderQty}`;
         document.getElementById('profileModal').style.display='block';
     }
     request.send();
@@ -308,13 +322,36 @@ const editOrderModal = (()=>{
     request.onload = function(){
         const order = document.getElementById('editOrder');
         const quantity = document.getElementById('editQuantity');
+        const orderUserId = document.getElementById('orderUserId');
         const result = JSON.parse(this.responseText);
 
+        orderUserId.value = result.id;
         order.value = result.product_name;
         quantity.value = result.quantity;
         document.getElementById('editOrderModal').style.display='block';
     };
     request.send();
+})
+
+const updateOrder = (()=>{
+    const orderId = document.getElementById('orderUserId').value;
+    const order = document.getElementById('editOrder').value;
+    const quantity = document.getElementById('editQuantity').value;
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const request = new XMLHttpRequest();
+
+    request.open("POST",'/updateorder/'+orderId, true);
+    request.setRequestHeader("X-CSRF-TOKEN", token);
+    request.onload = function(){
+    //    reload the order list of user on profile
+    getUserOrders(this.response);
+    }
+    request.send(JSON.stringify({
+        order: order,
+        quantity: quantity
+    }))
+
+    return false;
 })
 
 const closeEditOrderModal= (()=>{

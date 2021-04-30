@@ -14,6 +14,11 @@ class OrdersController extends Controller
         return $user;
     }
 
+    public function userOrders(User $userId)
+    {
+        return $userId->order()->get();
+    }
+
     public function addUserOrder(Request $request)
     {
         $userId = $request->json('userId');
@@ -33,5 +38,15 @@ class OrdersController extends Controller
     public function editUserOrder(Order $order)
     {
         return $order;
+    }
+
+    public function updateOrder(Order $orderId, Request $request)
+    {
+        // insert data to Orders table
+        $orderId->product_name = $request->json('order');
+        $orderId->quantity = $request->json('quantity');
+        $orderId->save();
+
+        return $orderId->user_id;
     }
 }
