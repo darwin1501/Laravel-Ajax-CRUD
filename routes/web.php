@@ -45,6 +45,7 @@ Route::get('/userorders/{userId}', [OrdersController::class, 'userOrders']);
 Route::post('/addorder', [OrdersController::class, 'addUserOrder']);
 Route::get('/editorder/{order}', [OrdersController::class, 'editUserOrder']);
 Route::post('/updateorder/{orderId}', [OrdersController::class, 'updateOrder']);
+Route::delete('/removeorder/{order}', [OrdersController::class, 'removeOrder']);
 
 // profile
 Route::get('/profile/{user}', [ProfileController::class, 'userProfile']);

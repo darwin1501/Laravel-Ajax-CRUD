@@ -49,4 +49,11 @@ class OrdersController extends Controller
 
         return $orderId->user_id;
     }
+
+    public function removeOrder(Order $order)
+    {
+        $order->delete();
+
+        return $order->user_id;
+    }
 }

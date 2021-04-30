@@ -145,7 +145,7 @@ const getUserOrders = ((userId)=>{
             allOrderQty.push(order.quantity);
             ordersTemplate =  `${order.product_name} ${order.quantity} 
             <button value="${order.id}" onclick="editOrderModal()" class="text-blue-500" >edit</button> 
-            <button value="${order.id}" class="text-red-400">remove</button><br><br>`;
+            <button onclick="removeOrder(${order.id})" class="text-red-400">remove</button><br><br>`;
             userOrders.insertAdjacentHTML('beforeend', ordersTemplate);
         };
         // add all numbers on array, 0 was default value
@@ -350,8 +350,20 @@ const updateOrder = (()=>{
         order: order,
         quantity: quantity
     }))
-
     return false;
+})
+
+const removeOrder = ((order)=>{
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const request = new XMLHttpRequest();
+
+    request.open("DELETE",'/removeorder/'+order, true);
+    request.setRequestHeader("X-CSRF-TOKEN", token);
+    request.onload = function(){
+        // reload the user orders after deleting orders
+        getUserOrders(this.response);
+    }
+    request.send();
 })
 
 const closeEditOrderModal= (()=>{
@@ -408,6 +420,7 @@ const addOrder = (()=>{
         order: order.value,
         quantity: quantity.value 
     }));
+    // prevent the form from submitting and reloading the page.
     return false;
 })
 
@@ -504,51 +517,6 @@ const deleteUser = ((userId)=>{
         userTableRow.classList.add('hidden');
         request.send();
     }
-
+    // prevent the form from submitting and reloading the page.
     return false;
 });
-
-
-// testing
-// const postUsers = (()=>{
-
-//     const username = document.getElementById('username').value;
-//     const meta = document.querySelector('meta[name="csrf-token"]').content;   
-
-//     const request = new XMLHttpRequest();
-// 	request.open("POST",'/users', true);
-//     request.setRequestHeader("X-CSRF-TOKEN", meta);
-
-// 	request.onload = function(){
-//         // console.log(JSON.parse(this.responseText))
-//         // document.getElementById('result').innerHTML = this.responseText
-//         console.log(this.responseText)
-//         console.log(userId);
-// 	}
-//     // key:value
-// 	request.send(JSON.stringify({
-//         username: username,
-//         age:23,
-//         gender:'male'
-//     }));
-//     //prevent the form from submitting and reloading the page.
-//     return false;
-// })
-
-// const bindUser = (()=>{
-//     const meta = document.querySelector('meta[name="csrf-token"]').content;  
-//     const userId = document.getElementById('userId').value; 
-
-//     const request = new XMLHttpRequest();
-// 	request.open("GET",'/users/'+userId, true);
-//     request.setRequestHeader("X-CSRF-TOKEN", meta);
-
-// 	request.onload = function(){
-//         console.log(this.responseText)
-//         // console.log(JSON.parse(this.responseText))
-// 	}
-//     // key:value
-// 	request.send();
-//     //prevent the form from submitting and reloading the page.
-//     return false;
-// })
